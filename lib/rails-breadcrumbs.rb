@@ -1,36 +1,19 @@
-module Rails
-  module Breadcrumbs
+#RAILS_3 = ::ActiveRecord::VERSION::MAJOR >= 3
 
-    class ActionController::Base
+require "active_record"
+require "action_controller"
+require "active_model"
 
-      protected
+#$LOAD_PATH.unshift(File.dirname(__FILE__))
 
-      def add_breadcrumb(name, url = '')
-        @breadcrumbs ||= []
-        url = send(url) if url.is_a?(Symbol)
-        @breadcrumbs << [name, url]
-      end
+require "rails-breadcrumbs"
+require "rails-breadcrumbs/version"
+require "rails-breadcrumbs/controller_extensions.rb"
+require "rails-breadcrumbs/view_extensions.rb"
 
-      def self.add_breadcrumb(name, url, options = {})
-        before_filter options do |controller|
-          controller.send(:add_breadcrumb, name, url)
-        end
-      end
+#$LOAD_PATH.shift
 
-    end
-
-    module Helper
-
-      def breadcrumbs(separator = "&rsaquo;")
-        @breadcrumbs.map do |txt, path|
-          link_to_unless (path.blank? || current_page?(path)), h(txt), path
-        end.join(" #{separator} ").html_safe
-      end
-
-    end
-
-  end
+if defined?(ActiveRecord::Base)
+  ActionController::Base.send(:include, RailsBreadcrumbs)
+  ActionView::Base.send(:include, RailsBreadcrumbs::Helper)
 end
-
-ActionController::Base.send(:include, Rails::Breadcrumbs)
-ActionView::Base.send(:include, Rails::Breadcrumbs::Helper)
