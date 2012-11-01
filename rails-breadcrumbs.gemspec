@@ -16,7 +16,7 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
 
   s.add_dependency('rails','>= 3.1')
-  s.add_dependency("bootstrap-sass", "~> 2.1.0.1")
+  s.add_dependency("bootstrap-sass", "~> 2.0.4.1")
 
   s.add_development_dependency('rspec')
   s.add_development_dependency('database_cleaner')
