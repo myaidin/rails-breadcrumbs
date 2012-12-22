@@ -3,7 +3,7 @@ module RailsBreadcrumbs
     def bootstrap_breadcrumbs(separator = "&rsaquo;")
       content_tag :ul, :class => "breadcrumb" do
         @breadcrumbs.map do |txt, path|
-          if (path.blank? || current_page?(path))
+          if (path.blank? || current_page?(path)) && ([txt,path] == @breadcrumbs.last)
             concat content_tag(:li, h(txt), :class => "active")
           else
             li = content_tag :li do
